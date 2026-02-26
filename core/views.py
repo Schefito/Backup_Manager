@@ -1,0 +1,170 @@
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.views.decorators.csrf import csrf_exempt
+import json
+from . import core_service
+
+@login_required(login_url='login')
+def dashboard(request):
+    stats = core_service.get_dashboard_stats()
+    return render(request, 'dashboard.html', {"stats": stats})
+
+@login_required(login_url='login')
+def history(request):
+    return render(request, 'backup_history.html')
+
+@login_required(login_url='login')
+def create_backup(request):
+    return render(request, 'create_backup.html')
+
+@login_required(login_url='login')
+def settings_view(request):
+    return render(request, 'settings.html')
+
+def register(request):
+    return render(request, 'register.html')
+
+def api_system_status(request):
+    return JsonResponse(core_service.get_system_status())
+
+
+@csrf_exempt
+def api_run_backup_from_sources(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("POST required")
+
+    data = json.loads(request.body or "{}")
+    description = data.get("description")
+    custom_name = data.get("custom_name")
+    sources = data.get("sources", [])
+    if not isinstance(sources, list) or len([s for s in sources if str(s).strip()]) == 0:
+        return JsonResponse({"ok": False, "error": "sources must be a non-empty list"}, status=400)
+    destination = data.get("destination")
+
+    upload_to_drive = data.get ("upload_to_drive", None)
+    if isinstance(upload_to_drive, str):
+        upload_to_drive =upload_to_drive.lower() == "true"
+
+    recipient_email = request.user.email if request.user.is_authenticated else None
+
+    result = core_service.run_backup_from_sources(
+        sources=sources, 
+        destination=destination,
+        upload_to_drive=upload_to_drive,
+        description=description,
+        custom_name=custom_name,
+        recipient_email=recipient_email
+    )
+    return JsonResponse(result)
+
+
+@csrf_exempt
+def api_run_backup_from_profile(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("POST required")
+
+    data = json.loads(request.body or "{}")
+    profile_id = data.get("profile_id")
+
+    upload_to_drive = data.get("upload_to_drive", None)
+    if isinstance(upload_to_drive, str):
+        upload_to_drive = upload_to_drive.lower() == "true"
+
+    result = core_service.run_backup_from_profile(
+        profile_id=profile_id,
+        upload_to_drive=upload_to_drive
+    )
+    return JsonResponse(result)
+
+
+def api_backup_history(request):
+    try:
+        limit = int(request.GET.get("limit", 20))
+    except (TypeError, ValueError):
+        limit = 20
+    history = core_service.get_backup_history(limit=limit)
+    return JsonResponse({"backups": history})
+
+
+def api_list_backup_profiles(request):
+    try:
+        limit = int(request.GET.get("limit", 50))
+    except (TypeError, ValueError):
+        limit = 50
+    profiles = core_service.list_backup_profiles(limit=limit)
+    return JsonResponse({"profiles": profiles})
+
+
+def api_get_backup_profile(request, profile_id):
+    profile = core_service.get_backup_profile(profile_id)
+    return JsonResponse({"profile": profile})
+
+
+@csrf_exempt
+def api_create_backup_profile(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("POST required")
+    data = json.loads(request.body or "{}")
+    profile = core_service.create_backup_profile(
+        name=data.get("name"),
+        sources=data.get("sources", []),
+        backup_directory=data.get("backup_directory"),
+        restore_directory=data.get("restore_directory"),
+        backup_frequency=data.get("backup_frequency"),
+        daily_report_enable=data.get("daily_report_enable", False),
+        daily_report_time=data.get("daily_report_time"),
+        recipient_email=data.get("recipient_email"),
+        is_default=data.get("is_default", False),
+        custom_name=data.get("custom_name"),
+        description=data.get("description")
+    )
+    return JsonResponse({"profile": profile})
+
+
+@csrf_exempt
+def api_restore_full(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("POST required")
+    data = json.loads(request.body or "{}")
+    backup_name = data.get("backup_name")
+    destination = data.get("destination")
+    result = core_service.restore_full(backup_name=backup_name, destination=destination)
+    return JsonResponse(result)
+
+
+@csrf_exempt
+def api_restore_partial(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("POST required")
+    data = json.loads(request.body or "{}")
+    backup_name = data.get("backup_name")
+    selection = data.get("selection", [])
+    destination = data.get("destination")
+    result = core_service.restore_partial(backup_name=backup_name, selection=selection, destination=destination)
+    return JsonResponse(result)
+
+
+@csrf_exempt
+def api_start_scheduler(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("POST required")
+    data = json.loads(request.body or "{}")
+    profile_id = data.get("profile_id")
+
+    upload_to_drive = data.get("upload_to_drive", None)
+    if isinstance(upload_to_drive, str):
+        upload_to_drive = upload_to_drive.lower() == "true"
+
+    result = core_service.start_scheduler(profile_id=profile_id, upload_to_drive=upload_to_drive)
+    return JsonResponse(result)
+
+
+def api_stop_scheduler(request):
+    result = core_service.stop_scheduler()
+    return JsonResponse(result)
+
+
+def api_send_daily_report_now(request):
+    result = core_service.send_daily_report_now()
+    return JsonResponse(result)

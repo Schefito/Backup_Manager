@@ -1,0 +1,43 @@
+#config
+#trzymanie ścierzekm ustawień, e-mailim harmonogramów w jednym miejscu
+#Bedziemy je inportować z tego pliku zamiast hardcodować
+
+# Gdy przejdziemy do wersji "sieciowej" (nie lokalnej) to pozmieniamy cos
+from pathlib import Path
+CORE_DIR = Path(__file__).resolve().parent.parent   # backup_app/core
+PROJECT_ROOT = CORE_DIR.parent                      # backup_app
+
+
+CONFIG = {
+    # Ścieżki
+    "source_directory": str(PROJECT_ROOT / "test_data"),
+    "backup_directory": str(PROJECT_ROOT / "backups"),
+    "restore_directory": str(PROJECT_ROOT / "restored_files"),
+    "backup_frequency": "daily",
+
+    # Baza danych
+    # tu będzie ściezka do bazy (narazie jest lokalnie)
+
+    # E-mail
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 587,
+    "sender_email": "backup.system.sender@gmail.com",
+    "sender_password": "nzbe epxr nvir qosb",           # Hasło aplikacji do backup.system.sender@gmail.com
+    "recipient_email": "backup.system.receiver@gmail.com, oliver.kosmider@gmail.com",
+
+    # Raporty e-mail
+    "daily_report_enable": True,
+    "daily_report_time": "8:00",
+
+    #Ilosc max backupów
+    #"max_backup": 10, # to się włączy po testach zeby nie usuneło backupów do pokazania 
+
+
+    # Google Drive
+    # Domyślne zachowanie - jeśli upload_to_drive nie zostanie podany z API
+    "enable_drive_upload": True,
+    # Zmieniłem ścieżke i dodalem core na początku
+    "drive_credentials_path": str(PROJECT_ROOT / "core/credentials/client_secret.json"),
+    "drive_folder_name": "BackupMenager_Backups" #folder tworzony dynamicznie przez google drive
+
+}   
