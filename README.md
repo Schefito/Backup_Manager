@@ -1,4 +1,4 @@
-# Cloud Backup Manager – Web Application Prototype
+# Backup Manager
 
 A Django-based web application designed to manage data backups between local storage and Google Drive. The project focuses on providing a centralized hub for data protection and system monitoring.
 
