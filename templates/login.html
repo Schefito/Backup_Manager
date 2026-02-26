@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<!-- strona logowania -->
+<head>
+  <meta charset="UTF-8" />
+  <title>Login – Backup Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+
+<body>
+  <!-- panel logowania -->
+  <div class="login-page">
+
+    <!-- karta -->
+    <section class="login-card">
+      <h2 class="login-title">Backup Manager</h2>
+      <p class="sub">Login to your account</p>
+
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <label class="field-label">Username</label>
+        <input
+          class="login-input"
+          type="text"
+          name="username"
+          placeholder="Enter your username"
+          required
+        />
+
+        <label class="field-label">Password</label>
+        <input
+          class="login-input"
+          type="password"
+          name="password"
+          placeholder="Enter your password"
+          required
+        />
+
+        <!-- FORGOT PASSWORD -->
+        <div class="login-row">
+          <span></span>
+          <a href="#" class="login-link">Forgot password?</a>
+        </div>
+
+        <button class="login-btn" type="submit">
+          Log in
+        </button>
+      </form>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="login-error">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <!-- REGISTER PLACEHOLDER -->
+      <div class="register-hint">
+        Don’t have an account?
+        <a href="#" class="login-link">Register here</a>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

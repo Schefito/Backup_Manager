@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backup History</title>
+    <link rel="stylesheet" href="{% static 'css/backupHistory.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
+  </head>
+
+  <body>
+    <div class="app">
+      <header class="header">
+        <h1 class="brand">backUP.manager</h1>
+
+        <div class="header-actions">
+          <button class="icon-btn" title="Toggle dark mode">🌙</button>
+        </div>
+      </header>
+
+      <div class="layout">
+        <nav class="sidebar">
+          <div class="sidebar-nav">
+            <a class="nav-link" href="{% url 'dashboard' %}">
+              <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-6"
+              >
+                <path
+                  d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z"
+                />
+                <path
+                  d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z"
+                />
+              </svg>
+
+              Dashboard
+            </a>
+
+            <a class="nav-link" href="{% url 'create_backup' %}">
+              <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-6"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M19.5 21a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-5.379a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H4.5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15Zm-6.75-10.5a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V10.5Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              Create Backup
+            </a>
+
+            <a class="nav-link active">
+              <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-6"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              History
+            </a>
+
+            <a class="nav-link" href="{% url 'settings' %}">
+              <svg
+                class="icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-6"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              Settings
+            </a>
+          </div>
+
+          <div class="user-section">
+            <div class="user-avatar">
+              {{ request.user.username|first|upper }}
+            </div>
+            <div class="user-info">
+              <div class="user-name">{{ request.user.username }}</div>
+              <div class="user-email">{{ request.user.email }}</div>
+            </div>
+            <form method="post" action="{% url 'logout' %}" class="logout-form">
+              {% csrf_token %}
+              <button type="submit" class="logout-link">→ Log out</button>
+            </form>
+          </div>
+        </nav>
+
+        <main class="content">
+          <div id="status-success" class="status-message status-success" style="display: none;">
+            <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+            </svg>
+            <div>
+              <h4>Success!</h4>
+              <p>Backup has been successfully restored.</p>
+            </div>
+          </div>
+
+          <div id="status-error" class="status-message status-error" style="display: none;">
+            <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+            </svg>
+            <div>
+              <h4>Error</h4>
+              <p>Failed to restore backup. Please try again.</p>
+            </div>
+          </div>
+
+          <div class="content-header">
+            <div>
+              <h2>Here is our History</h2>
+              <p class="content-subtitle">
+                Review your past backup activities, including statuses and logs.
+                Restore backups
+              </p>
+            </div>
+          </div>
+
+          <section class="history-wrapper">
+            <div class="history-header">
+              <svg
+                class="history-header-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <h3>Search and Restore</h3>
+            </div>
+
+            <div class="history-container">
+              <div class="history-top">
+                <input
+                  class="search"
+                  type="text"
+                  placeholder="Search by name or date"
+                />
+                <select class="status-filter" aria-label="Filter by status">
+                  <option>Filter by status: All</option>
+                  <option>Confirmed</option>
+                  <option>Failed</option>
+                </select>
+              </div>
+
+              <table
+                class="table"
+                role="table"
+                aria-label="Backup history table"
+              >
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="history-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <script src="{% static 'js/theme.js' %}?v=2"></script>
+    <script>
+      window.showSuccess = function() {
+        console.log("showSuccess() wywołane");
+        const el = document.getElementById("status-success");
+        console.log("Element status-success:", el);
+        if (el) {
+          el.style.display = "flex";
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(() => {
+            el.style.display = "none";
+          }, 5000);
+        } else {
+          console.error("Element status-success nie został znaleziony!");
+          alert("Restore zakończony sukcesem!");
+        }
+      };
+      
+      window.showError = function() {
+        console.log("showError() wywołane");
+        const el = document.getElementById("status-error");
+        console.log("Element status-error:", el);
+        if (el) {
+          el.style.display = "flex";
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(() => {
+            el.style.display = "none";
+          }, 5000);
+        } else {
+          console.error("Element status-error nie został znaleziony!");
+          alert("Restore zakończony niepowodzeniem!");
+        }
+      };
+      
+      console.log("Funkcje showSuccess i showError zdefiniowane w window");
+    </script>
+    <script src="{% static 'js/backupHistory.js' %}?v=5"></script>
+  </body>
+
+</html>
